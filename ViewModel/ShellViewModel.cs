@@ -1,11 +1,7 @@
-﻿using Prism.Commands;
-using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Prism.Commands;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WpfProductsData;
 using WpfProductsData.Repositories;
 using WpfProductsTest.ViewModel.Base;
 using WpfProdutcs.Models;
@@ -29,6 +25,7 @@ namespace WpfProductsTest.ViewModel
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand NewCommand { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
+        public DelegateCommand GetJsonCommand { get; set; }
         public DelegateCommand<ProductDto> SelectionChangedCommand { get; set; }
 
         protected override void RegisterCommands()
@@ -37,6 +34,7 @@ namespace WpfProductsTest.ViewModel
             NewCommand = new DelegateCommand(New);
             SelectionChangedCommand = new DelegateCommand<ProductDto>(SelectionChanged);
             DeleteCommand = new DelegateCommand(Delete);
+            GetJsonCommand = new DelegateCommand(GetJson);
         }
 
         private void Delete()
@@ -77,6 +75,11 @@ namespace WpfProductsTest.ViewModel
                 })
                 .ToList();
             Products.AddRange(products);
+        }
+        private void GetJson()
+        {
+            var jsonProducts = JsonConvert.SerializeObject(_productRepository.Get());
+            System.IO.File.WriteAllText(@"C:\Users\biriukov\Documents\jsonproducts.txt", jsonProducts);
         }
         protected override void RegisterCollections()
         {

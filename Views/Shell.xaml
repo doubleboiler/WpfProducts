@@ -59,6 +59,7 @@
             <Button Content="Сохранить" Command="{Binding SaveCommand}"></Button>
             <Button Content="Очистить" Command="{Binding NewCommand}"></Button>
             <Button Content="Удалить" Command="{Binding DeleteCommand}"></Button>
+            <Button Content="Записать в файл" Command="{Binding GetJsonCommand}" Width="125"/>
 
         </StackPanel>
     </Grid>
