@@ -33,7 +33,7 @@ namespace WpfProductsData.Repositories
 
         public T Get(int id)
         {
-            return Get().First(x => x.Id == id);
+            return Get().FirstOrDefault(x => x.Id == id);
         }
         private T SaveNew(T entity)
         {
