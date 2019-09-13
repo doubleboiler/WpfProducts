@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -89,10 +90,18 @@ namespace WpfProductsTest.ViewModel
         private void DeserializeJson()
         {
             var loadPath = @"C:\Users\biriukov\Documents\jsonproductstoload.txt";
-            var newProducts = JsonConvert.DeserializeObject<Product[]>(System.IO.File.ReadAllText(loadPath));
-            foreach(var product in newProducts)
+
+            try
             {
-                _productRepository.Save(product);
+                var newProducts = JsonConvert.DeserializeObject<Product[]>(System.IO.File.ReadAllText(loadPath));
+                foreach (var product in newProducts)
+                {
+                    _productRepository.Save(product);
+                }
+            }
+            catch (JsonSerializationException)
+            {
+                throw new InvalidOperationException("Ошибка в файле");
             }
 
         }
