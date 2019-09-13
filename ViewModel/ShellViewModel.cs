@@ -37,8 +37,8 @@ namespace WpfProductsTest.ViewModel
             NewCommand = new DelegateCommand(New);
             SelectionChangedCommand = new DelegateCommand<ProductDto>(SelectionChanged);
             DeleteCommand = new DelegateCommand(Delete);
-            GetJsonCommand = new DelegateCommand(GetJson);
-            LoadJsonCommand = new DelegateCommand(LoadJson);
+            GetJsonCommand = new DelegateCommand(SerializeJson);
+            LoadJsonCommand = new DelegateCommand(DeserializeJson);
         }
 
         private void Delete()
@@ -80,15 +80,16 @@ namespace WpfProductsTest.ViewModel
                 .ToList();
             Products.AddRange(products);
         }
-        private void GetJson()
+        private void SerializeJson()
         {
+            var getPath = @"C:\Users\biriukov\Documents\jsonproducts.txt";
             var jsonProducts = JsonConvert.SerializeObject(_productRepository.Get());
-            System.IO.File.WriteAllText(@"C:\Users\biriukov\Documents\jsonproducts.txt", jsonProducts);
+            System.IO.File.WriteAllText(getPath, jsonProducts);
         }
-        private void LoadJson()
+        private void DeserializeJson()
         {
-            var newProducts = JsonConvert.DeserializeObject<Product[]>(System.IO.File
-                .ReadAllText(@"C:\Users\biriukov\Documents\jsonproductstoload.txt"));
+            var loadPath = @"C:\Users\biriukov\Documents\jsonproductstoload.txt";
+            var newProducts = JsonConvert.DeserializeObject<Product[]>(System.IO.File.ReadAllText(loadPath));
             foreach(var product in newProducts)
             {
                 _productRepository.Save(product);

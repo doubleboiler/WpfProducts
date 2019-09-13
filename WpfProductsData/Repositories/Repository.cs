@@ -44,11 +44,12 @@ namespace WpfProductsData.Repositories
 
         public T Save(T entity)
         {
-            if (entity.Id == 0)
+            var databaseEntity = Get(entity.Id);
+
+            if (entity.Id == 0 || databaseEntity==null)
             {
                 return SaveNew(entity);
             }
-            var databaseEntity = Get(entity.Id);
             _productContext.Entry(databaseEntity).CurrentValues.SetValues(entity);
             _productContext.SaveChanges();
             return entity;
